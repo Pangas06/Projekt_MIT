@@ -1,0 +1,378 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.0 #14620 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module delay
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _delay_ms
+                                     12 	.globl _delay_us
+                                     13 ;--------------------------------------------------------
+                                     14 ; ram data
+                                     15 ;--------------------------------------------------------
+                                     16 	.area DATA
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area INITIALIZED
+                                     21 ;--------------------------------------------------------
+                                     22 ; absolute external ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area DABS (ABS)
+                                     25 
+                                     26 ; default segment ordering for linker
+                                     27 	.area HOME
+                                     28 	.area GSINIT
+                                     29 	.area GSFINAL
+                                     30 	.area CONST
+                                     31 	.area INITIALIZER
+                                     32 	.area CODE
+                                     33 
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area HOME
+                                     38 	.area GSINIT
+                                     39 	.area GSFINAL
+                                     40 	.area GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 ;	inc/delay.h: 14: static inline void _delay_cycl( unsigned short __ticks )
+                                     51 ; genLabel
+                                     52 ;	-----------------------------------------
+                                     53 ;	 function _delay_cycl
+                                     54 ;	-----------------------------------------
+                                     55 ;	Register assignment is optimal.
+                                     56 ;	Stack space usage: 0 bytes.
+      000000                         57 __delay_cycl:
+                                     58 ; genReceive
+                                     59 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                     60 ;	genInline
+      000000 9D               [ 1]   61 	nop
+      000001 9D               [ 1]   62 	nop
+                                     63 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                     64 ; genAssign
+                                     65 ; genLabel
+      000002                         66 00101$:
+                                     67 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                     68 ; genMinus
+      000002 5A               [ 2]   69 	decw	x
+                                     70 ;	inc/delay.h: 26: } while ( __ticks );
+                                     71 ; genIfx
+      000003 5D               [ 2]   72 	tnzw	x
+      000004 27 03            [ 1]   73 	jreq	00121$
+      000006 CCr00r02         [ 2]   74 	jp	00101$
+      000009                         75 00121$:
+                                     76 ;	inc/delay.h: 27: __asm__("nop\n");
+                                     77 ;	genInline
+      000009 9D               [ 1]   78 	nop
+                                     79 ; genLabel
+      00000A                         80 00104$:
+                                     81 ;	inc/delay.h: 37: }
+                                     82 ; genEndFunction
+      00000A 81               [ 4]   83 	ret
+                                     84 ;	inc/delay.h: 39: static inline void _delay_us( const unsigned short __us )
+                                     85 ; genLabel
+                                     86 ;	-----------------------------------------
+                                     87 ;	 function _delay_us
+                                     88 ;	-----------------------------------------
+                                     89 ;	Register assignment might be sub-optimal.
+                                     90 ;	Stack space usage: 0 bytes.
+      00000B                         91 __delay_us:
+                                     92 ; genReceive
+                                     93 ;	inc/delay.h: 41: _delay_cycl( (unsigned short)( T_COUNT(__us) );
+                                     94 ; genCast
+                                     95 ; genAssign
+      00000B 90 5F            [ 1]   96 	clrw	y
+                                     97 ; genIPush
+      00000D 89               [ 2]   98 	pushw	x
+      00000E 90 89            [ 2]   99 	pushw	y
+                                    100 ; genIPush
+      000010 4B 00            [ 1]  101 	push	#0x00
+      000012 4B 24            [ 1]  102 	push	#0x24
+      000014 4B F4            [ 1]  103 	push	#0xf4
+      000016 4B 00            [ 1]  104 	push	#0x00
+                                    105 ; genCall
+      000018 CDr00r00         [ 4]  106 	call	__mullong
+      00001B 5B 08            [ 2]  107 	addw	sp, #8
+                                    108 ; genCast
+                                    109 ; genAssign
+                                    110 ; genIPush
+      00001D 4B 40            [ 1]  111 	push	#0x40
+      00001F 4B 42            [ 1]  112 	push	#0x42
+      000021 4B 0F            [ 1]  113 	push	#0x0f
+      000023 4B 00            [ 1]  114 	push	#0x00
+                                    115 ; genIPush
+      000025 89               [ 2]  116 	pushw	x
+      000026 90 89            [ 2]  117 	pushw	y
+                                    118 ; genCall
+      000028 CDr00r00         [ 4]  119 	call	__divulong
+      00002B 5B 08            [ 2]  120 	addw	sp, #8
+                                    121 ; genMinus
+      00002D 1D 00 05         [ 2]  122 	subw	x, #0x0005
+      000030 24 02            [ 1]  123 	jrnc	00122$
+      000032 90 5A            [ 2]  124 	decw	y
+      000034                        125 00122$:
+                                    126 ; genIPush
+      000034 4B 05            [ 1]  127 	push	#0x05
+      000036 4B 00            [ 1]  128 	push	#0x00
+      000038 4B 00            [ 1]  129 	push	#0x00
+      00003A 4B 00            [ 1]  130 	push	#0x00
+                                    131 ; genIPush
+      00003C 89               [ 2]  132 	pushw	x
+      00003D 90 89            [ 2]  133 	pushw	y
+                                    134 ; genCall
+      00003F CDr00r00         [ 4]  135 	call	__divulong
+      000042 5B 08            [ 2]  136 	addw	sp, #8
+                                    137 ; genCast
+                                    138 ; genAssign
+                                    139 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                    140 ;	genInline
+      000044 9D               [ 1]  141 	nop
+      000045 9D               [ 1]  142 	nop
+                                    143 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                    144 ; genAssign
+                                    145 ; genLabel
+      000046                        146 00101$:
+                                    147 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                    148 ; genMinus
+      000046 5A               [ 2]  149 	decw	x
+                                    150 ;	inc/delay.h: 26: } while ( __ticks );
+                                    151 ; genIfx
+      000047 5D               [ 2]  152 	tnzw	x
+      000048 27 03            [ 1]  153 	jreq	00123$
+      00004A CCr00r46         [ 2]  154 	jp	00101$
+      00004D                        155 00123$:
+                                    156 ;	inc/delay.h: 27: __asm__("nop\n");
+                                    157 ;	genInline
+      00004D 9D               [ 1]  158 	nop
+                                    159 ;	inc/delay.h: 41: _delay_cycl( (unsigned short)( T_COUNT(__us) );
+                                    160 ; genLabel
+      00004E                        161 00105$:
+                                    162 ;	inc/delay.h: 42: }
+                                    163 ; genEndFunction
+      00004E 81               [ 4]  164 	ret
+                                    165 ;	./src/delay.c: 4: void delay_us(uint8_t us)
+                                    166 ; genLabel
+                                    167 ;	-----------------------------------------
+                                    168 ;	 function delay_us
+                                    169 ;	-----------------------------------------
+                                    170 ;	Register assignment might be sub-optimal.
+                                    171 ;	Stack space usage: 4 bytes.
+      00004F                        172 _delay_us:
+      00004F 52 04            [ 2]  173 	sub	sp, #4
+                                    174 ; genReceive
+                                    175 ;	./src/delay.c: 6: _delay_us(us);
+                                    176 ; genCast
+                                    177 ; genAssign
+                                    178 ;	inc/delay.h: 41: _delay_cycl( (unsigned short)( T_COUNT(__us) );
+                                    179 ; genCast
+                                    180 ; genAssign
+      000051 5F               [ 1]  181 	clrw	x
+      000052 0F 01            [ 1]  182 	clr	(0x01, sp)
+                                    183 ; genIPush
+      000054 88               [ 1]  184 	push	a
+      000055 89               [ 2]  185 	pushw	x
+      000056 4F               [ 1]  186 	clr	a
+      000057 88               [ 1]  187 	push	a
+                                    188 ; genIPush
+      000058 4B 00            [ 1]  189 	push	#0x00
+      00005A 4B 24            [ 1]  190 	push	#0x24
+      00005C 4B F4            [ 1]  191 	push	#0xf4
+      00005E 4B 00            [ 1]  192 	push	#0x00
+                                    193 ; genCall
+      000060 CDr00r00         [ 4]  194 	call	__mullong
+      000063 5B 08            [ 2]  195 	addw	sp, #8
+                                    196 ; genCast
+                                    197 ; genAssign
+                                    198 ; genIPush
+      000065 4B 40            [ 1]  199 	push	#0x40
+      000067 4B 42            [ 1]  200 	push	#0x42
+      000069 4B 0F            [ 1]  201 	push	#0x0f
+      00006B 4B 00            [ 1]  202 	push	#0x00
+                                    203 ; genIPush
+      00006D 89               [ 2]  204 	pushw	x
+      00006E 90 89            [ 2]  205 	pushw	y
+                                    206 ; genCall
+      000070 CDr00r00         [ 4]  207 	call	__divulong
+      000073 5B 08            [ 2]  208 	addw	sp, #8
+                                    209 ; genMinus
+      000075 1D 00 05         [ 2]  210 	subw	x, #0x0005
+      000078 24 02            [ 1]  211 	jrnc	00123$
+      00007A 90 5A            [ 2]  212 	decw	y
+      00007C                        213 00123$:
+                                    214 ; genIPush
+      00007C 4B 05            [ 1]  215 	push	#0x05
+      00007E 4B 00            [ 1]  216 	push	#0x00
+      000080 4B 00            [ 1]  217 	push	#0x00
+      000082 4B 00            [ 1]  218 	push	#0x00
+                                    219 ; genIPush
+      000084 89               [ 2]  220 	pushw	x
+      000085 90 89            [ 2]  221 	pushw	y
+                                    222 ; genCall
+      000087 CDr00r00         [ 4]  223 	call	__divulong
+      00008A 5B 08            [ 2]  224 	addw	sp, #8
+                                    225 ; genCast
+                                    226 ; genAssign
+                                    227 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                    228 ;	genInline
+      00008C 9D               [ 1]  229 	nop
+      00008D 9D               [ 1]  230 	nop
+                                    231 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                    232 ; genAssign
+                                    233 ; genLabel
+      00008E                        234 00101$:
+                                    235 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                    236 ; genMinus
+      00008E 5A               [ 2]  237 	decw	x
+                                    238 ;	inc/delay.h: 26: } while ( __ticks );
+                                    239 ; genIfx
+      00008F 5D               [ 2]  240 	tnzw	x
+      000090 27 03            [ 1]  241 	jreq	00124$
+      000092 CCr00r8E         [ 2]  242 	jp	00101$
+      000095                        243 00124$:
+                                    244 ;	inc/delay.h: 27: __asm__("nop\n");
+                                    245 ;	genInline
+      000095 9D               [ 1]  246 	nop
+                                    247 ;	./src/delay.c: 6: _delay_us(us);
+                                    248 ; genLabel
+      000096                        249 00106$:
+                                    250 ;	./src/delay.c: 7: }
+                                    251 ; genEndFunction
+      000096 5B 04            [ 2]  252 	addw	sp, #4
+      000098 81               [ 4]  253 	ret
+                                    254 ;	./src/delay.c: 9: void delay_ms(uint16_t ms)
+                                    255 ; genLabel
+                                    256 ;	-----------------------------------------
+                                    257 ;	 function delay_ms
+                                    258 ;	-----------------------------------------
+                                    259 ;	Register assignment might be sub-optimal.
+                                    260 ;	Stack space usage: 2 bytes.
+      000099                        261 _delay_ms:
+      000099 89               [ 2]  262 	pushw	x
+                                    263 ; genReceive
+      00009A 1F 01            [ 2]  264 	ldw	(0x01, sp), x
+                                    265 ;	./src/delay.c: 11: for (int16_t i = 0; i < ms; i++) {
+                                    266 ; genAssign
+      00009C 90 5F            [ 1]  267 	clrw	y
+                                    268 ; genLabel
+      00009E                        269 00123$:
+                                    270 ; genCast
+                                    271 ; genAssign
+      00009E 93               [ 1]  272 	ldw	x, y
+                                    273 ; genCmp
+                                    274 ; genCmpTnz
+      00009F 13 01            [ 2]  275 	cpw	x, (0x01, sp)
+      0000A1 25 03            [ 1]  276 	jrc	00202$
+      0000A3 CCr00rDF         [ 2]  277 	jp	00125$
+      0000A6                        278 00202$:
+                                    279 ; skipping generated iCode
+                                    280 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                    281 ;	genInline
+      0000A6 9D               [ 1]  282 	nop
+      0000A7 9D               [ 1]  283 	nop
+                                    284 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                    285 ; genAssign
+      0000A8 AE 03 1F         [ 2]  286 	ldw	x, #0x031f
+                                    287 ; genLabel
+      0000AB                        288 00102$:
+                                    289 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                    290 ; genMinus
+      0000AB 5A               [ 2]  291 	decw	x
+                                    292 ;	inc/delay.h: 26: } while ( __ticks );
+                                    293 ; genIfx
+      0000AC 5D               [ 2]  294 	tnzw	x
+      0000AD 27 03            [ 1]  295 	jreq	00203$
+      0000AF CCr00rAB         [ 2]  296 	jp	00102$
+      0000B2                        297 00203$:
+                                    298 ;	inc/delay.h: 27: __asm__("nop\n");
+                                    299 ;	genInline
+      0000B2 9D               [ 1]  300 	nop
+                                    301 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                    302 ;	genInline
+      0000B3 9D               [ 1]  303 	nop
+      0000B4 9D               [ 1]  304 	nop
+                                    305 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                    306 ; genAssign
+      0000B5 AE 03 1F         [ 2]  307 	ldw	x, #0x031f
+                                    308 ; genLabel
+      0000B8                        309 00107$:
+                                    310 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                    311 ; genMinus
+      0000B8 5A               [ 2]  312 	decw	x
+                                    313 ;	inc/delay.h: 26: } while ( __ticks );
+                                    314 ; genIfx
+      0000B9 5D               [ 2]  315 	tnzw	x
+      0000BA 27 03            [ 1]  316 	jreq	00204$
+      0000BC CCr00rB8         [ 2]  317 	jp	00107$
+      0000BF                        318 00204$:
+                                    319 ;	inc/delay.h: 27: __asm__("nop\n");
+                                    320 ;	genInline
+      0000BF 9D               [ 1]  321 	nop
+                                    322 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                    323 ;	genInline
+      0000C0 9D               [ 1]  324 	nop
+      0000C1 9D               [ 1]  325 	nop
+                                    326 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                    327 ; genAssign
+      0000C2 AE 03 1F         [ 2]  328 	ldw	x, #0x031f
+                                    329 ; genLabel
+      0000C5                        330 00112$:
+                                    331 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                    332 ; genMinus
+      0000C5 5A               [ 2]  333 	decw	x
+                                    334 ;	inc/delay.h: 26: } while ( __ticks );
+                                    335 ; genIfx
+      0000C6 5D               [ 2]  336 	tnzw	x
+      0000C7 27 03            [ 1]  337 	jreq	00205$
+      0000C9 CCr00rC5         [ 2]  338 	jp	00112$
+      0000CC                        339 00205$:
+                                    340 ;	inc/delay.h: 27: __asm__("nop\n");
+                                    341 ;	genInline
+      0000CC 9D               [ 1]  342 	nop
+                                    343 ;	inc/delay.h: 23: __asm__("nop\n nop\n"); 
+                                    344 ;	genInline
+      0000CD 9D               [ 1]  345 	nop
+      0000CE 9D               [ 1]  346 	nop
+                                    347 ;	inc/delay.h: 24: do { 		// ASM: ldw X, #tick; lab$: decw X; tnzw X; jrne lab$
+                                    348 ; genAssign
+      0000CF AE 03 08         [ 2]  349 	ldw	x, #0x0308
+                                    350 ; genLabel
+      0000D2                        351 00117$:
+                                    352 ;	inc/delay.h: 25: __ticks--;//      2c;                 1c;     2c    ; 1/2c   
+                                    353 ; genMinus
+      0000D2 5A               [ 2]  354 	decw	x
+                                    355 ;	inc/delay.h: 26: } while ( __ticks );
+                                    356 ; genIfx
+      0000D3 5D               [ 2]  357 	tnzw	x
+      0000D4 27 03            [ 1]  358 	jreq	00206$
+      0000D6 CCr00rD2         [ 2]  359 	jp	00117$
+      0000D9                        360 00206$:
+                                    361 ;	inc/delay.h: 27: __asm__("nop\n");
+                                    362 ;	genInline
+      0000D9 9D               [ 1]  363 	nop
+                                    364 ;	./src/delay.c: 11: for (int16_t i = 0; i < ms; i++) {
+                                    365 ; genPlus
+      0000DA 90 5C            [ 1]  366 	incw	y
+                                    367 ; genGoto
+      0000DC CCr00r9E         [ 2]  368 	jp	00123$
+                                    369 ; genLabel
+      0000DF                        370 00125$:
+                                    371 ;	./src/delay.c: 17: }
+                                    372 ; genEndFunction
+      0000DF 85               [ 2]  373 	popw	x
+      0000E0 81               [ 4]  374 	ret
+                                    375 	.area CODE
+                                    376 	.area CONST
+                                    377 	.area INITIALIZER
+                                    378 	.area CABS (ABS)
