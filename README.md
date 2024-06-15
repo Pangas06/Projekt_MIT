@@ -45,10 +45,11 @@ Odkaz na [git repositář](https://github.com/Pangas06/Projekt_MIT)
 
 #define PZ_PORT GPIOD
 #define PZ_PIN  GPIO_PIN_4
+
 /*
-1. nastaví pin do úrovně High
-2. nastaví pin do úrovně Low
-3. převrátí úroveň pinu
+1. PZ_DOWN     nastaví pin do úrovně High
+2. PZ_UP       nastaví pin do úrovně Low
+3. PZ_REVERSE  převrátí úroveň pinu
 */
 
 #define PZ_DOWN     GPIO_WriteHigh(PZ_PORT, PZ_PIN)        
@@ -68,8 +69,6 @@ void init(void)
 }
 ```
 3. Funkce pro akustický signál pro vstup
-   Při zavolání této funkce se spustí první cyklus while, který jednou za milisekundu přepne stav pinu, na kterém je připojený piezoelektrický bzučák, a tím generuje tón s frekvencí 500 Hz. Po 50 milisekundách se přeruší.
-   Druhý cyklus while přepíná stav pinu s vyšší frekvencí -> vyšší tón. Po 100 milisekundách se přeruší. Takto vznikne melodie pro označení vstupu.
 ```c
 void zvuk_vstup(void){
 	
@@ -81,33 +80,33 @@ void zvuk_vstup(void){
 
     time = milis();
     lastTime = milis();
-    while(1){
+    while(1){                     // Při zavolání této funkce se spustí první cyklus while, který jednou za milisekundu přepne stav pinu, na kterém je připojený piezoelektrický bzučák, a tím generuje tón s frekvencí 500 Hz.
 
-        if (UP == zvuk_stav){
+        if (UP == zvuk_stav){     
             PZ_UP;
-            if (milis() - lastTime > 1) {
-                    lastTime = milis();
+            if (milis() - lastTime > 1) { //Po 1 milisekundě se přepne stav Pinu z High na Low, protože zvuk_stav se nastaví na 0
+                    lastTime = milis();   //nastavení lastTime na čas milis()
                     zvuk_stav = 0;
                 }
-        }else if (DOWN == zvuk_stav){
+        }else if (DOWN == zvuk_stav){  
             PZ_DOWN;
-            if (milis() - lastTime > 1) {
-                    lastTime = milis();
+            if (milis() - lastTime > 1) { //Po 1 milisekundě se přepne stav Pinu z High na Low, protože zvuk_stav se nastaví na 1
+                    lastTime = milis();   //nastavení lastTime na čas milis()
                     zvuk_stav = 1;
                 }
         }
-        if(milis() - time > 50){
+        if(milis() - time > 50){ //Po 50 milisekundách se tento cyklus přeruší.
             PZ_UP;
-            break;
+            break;                        //přerušení cyklu
         }
     }
 
     time = milis();
-    while(1){
+    while(1){                     //Druhý cyklus while přepíná stav pinu s vyšší frekvencí -> vyšší tón.
         PZ_REVERSE;
-        if(milis() - time > 100){
+        if(milis() - time > 100){ //Po 100 milisekundách se přeruší. Takto vznikne melodie pro označení vstupu.
             PZ_UP;
-            break;
+            break;                //přerušení cyklu
         }
     }
 }
