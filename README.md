@@ -80,7 +80,7 @@ void zvuk_vstup(void){
 
     time = milis();
     lastTime = milis();
-    while(1){                     // Při zavolání této funkce se spustí první cyklus while, který jednou za milisekundu přepne stav pinu, na kterém je připojený piezoelektrický bzučák, a tím generuje tón s frekvencí 500 Hz.
+    while(1){                              // Při zavolání této funkce se spustí první cyklus while, který jednou za milisekundu přepne stav pinu, na kterém je připojený piezoelektrický bzučák, a tím generuje tón s frekvencí 500 Hz.
 
         if (UP == zvuk_stav){     
             PZ_UP;
@@ -95,9 +95,9 @@ void zvuk_vstup(void){
                     zvuk_stav = 1;
                 }
         }
-        if(milis() - time > 50){ //Po 50 milisekundách se tento cyklus přeruší.
+        if(milis() - time > 50){         //Po 50 milisekundách se tento cyklus přeruší.
             PZ_UP;
-            break;                        //přerušení cyklu
+            break;                       //přerušení cyklu
         }
     }
 
