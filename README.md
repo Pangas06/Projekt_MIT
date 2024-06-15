@@ -16,7 +16,8 @@
 
 
 
-## Popis činnosti programu
+## Stručný popis činnosti programu
+Tento program slouží pro počítání průchodů, jejichž počet se zapisuje na LCD displej. Každý průchod je oznámen zvukovou signalizací přes piezoelektrický bzučák (rozdílné melodie pro oznámení vstupu a výstupu). Program myslí i na případ, kdy předmět projde jednou dvojicí senzorů, neprojde už druhou dvojicí, ale vrátí zpět stejnou cestou.
 
 
 ## Zdrojový kód
