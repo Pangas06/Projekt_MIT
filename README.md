@@ -221,16 +221,16 @@ int main(void){
             mezivystup = 0;                  //vynulování mezivýstupu
             vstup_pred = vstup_ted;          //uložení nynějšího stavu vstupu jako předchozí počet vstupů
             lcd_gotoxy(0,0);                 //napsání na displej
-		        sprintf(text,"vstupy  =   %u",(uint16_t)vstup_ted);
-		        lcd_puts(text);
-			      zvuk_vstup();                    //melodie vstupu
+            sprintf(text,"vstupy  =   %u",(uint16_t)vstup_ted);
+            lcd_puts(text);
+            zvuk_vstup();                    //melodie vstupu
         }else if(vystup_ted > vystup_pred){  //pokud se zvýší nynější hodnota výstupu oproti předešlé, tak došlo k provedení výstupu
             mezivystup = 0;                  //vynulování mezivstupu
             mezivstup = 0;                   //vynulování mezivýstupu
             vystup_pred = vystup_ted;        //uložení nynějšího stavu výstupu jako předchozí počet výstupů
             lcd_gotoxy(0,1);                 //napsání na displej
-		        sprintf(text2,"vystupy =   %u",(uint16_t)vystup_ted);
-    	      lcd_puts(text2);
+            sprintf(text2,"vystupy =   %u",(uint16_t)vystup_ted);
+            lcd_puts(text2);
             zvuk_vystup();                   //melodie výstupu
         }
     }
