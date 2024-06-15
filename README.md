@@ -233,6 +233,6 @@ int main(void){
     	      lcd_puts(text2);
             zvuk_vystup();                   //melodie výstupu
         }
-	  }
+    }
 }
 ```
