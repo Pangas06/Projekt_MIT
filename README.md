@@ -9,7 +9,7 @@
 
 
 ## Schéma zapojení
-
+![Schéma](mit_schema.png)
 
 
 ## Vývojový diagram
