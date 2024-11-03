@@ -14,7 +14,7 @@
 
 
 ## Vývojový diagram
-![Vývojový diagram](mit_diagram.png)
+![Vývojový diagram](diagram.svg)
 
 
 ## Stručný popis činnosti programu
