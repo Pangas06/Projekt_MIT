@@ -6,7 +6,8 @@
 2. Při průchodu vydá akustický signál.
 3. Stav počtu lidí zobrazen na LCD display.
 
-
+## Blokové schéma:
+![Blokové Schéma](blokove_schema.png)
 
 ## Schéma zapojení
 ![Schéma](mit_schema.png)
