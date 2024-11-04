@@ -240,7 +240,7 @@ int main(void){
 ```
 
 ## Závěr:
-Tato práce byla mým prvním projektem na mikrokontroléru STM8. Programování probíhalo v programovacím prostředí Visual Studio Code. Tímto projektem jsem se naučil číst data z optických snímačů, práci s LCD displejem a zlepšil dovednosti na STM8. Na projektu jsem strávil 50 hodin. Projekt je funkční ve všech bodech zadání.
+Tato práce byla mým prvním projektem na mikrokontroléru STM8. Programování probíhalo v programovacím prostředí Visual Studio Code. Tímto projektem jsem se naučil práci s optickými snímači, práci s LCD displejem a zlepšil dovednosti na STM8. Na projektu jsem strávil 50 hodin. Projekt je funkční ve všech bodech zadání.
 
 Další možné vylepší toho projektu jsou:
 1. Přidání bezdrátové komunikace pro přenos dat na vzdálené zařízení.
