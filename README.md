@@ -14,7 +14,7 @@
 
 
 ## Vývojový diagram
-![Vývojový diagram](diagram.svg)
+![Vývojový diagram](Blank_diagram2.svg)
 
 
 ## Stručný popis činnosti programu
